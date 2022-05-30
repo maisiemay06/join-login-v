@@ -1,6 +1,5 @@
 <template>
   <div class="social-signin">
-    <h2>sign in</h2>
     <div class="social-button">
       <img src="../assets/li-logo.png" alt="Linkedin logo" />
       <p>Continue with Linkedin</p>
@@ -27,17 +26,6 @@ export default {
 </script>
 
 <style scoped>
-.social-signin {
-  width: 100%;
-  margin: auto;
-  margin-top: 148px;
-  text-align: center;
-}
-.social-signin h2 {
-  font-size: 1.875rem;
-  font-weight: 600;
-  margin-bottom: 44px;
-}
 .social-button {
   background-color: #fff;
   border: none;

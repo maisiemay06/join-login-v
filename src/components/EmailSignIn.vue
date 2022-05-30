@@ -44,7 +44,7 @@
         </span>
 
         <input
-          v-if="pageType === 'join'"
+          v-if="pageType === 'sign up'"
           :type="showSecPassword ? 'text' : 'password'"
           name="sec-password"
           id="sec-password"
@@ -74,7 +74,7 @@
       <span class="forgot-pass">
         <a href="">Forgotten password?</a>
       </span>
-      <button :disabled="submitDisabled ? true : false">sign-in</button>
+      <button :disabled="submitDisabled ? true : false">{{ pageType }}</button>
     </form>
   </div>
 </template>
@@ -199,7 +199,7 @@ export default {
         // if invalid, show invalid msg
         this.passwordInvalidMsg = "Password invalid";
       } else if (
-        this.pageType === "join" &&
+        this.pageType === "sign up" &&
         this.passwordInput !== this.secPasswordInput
       ) {
         // if passwords don't match, show no match msg

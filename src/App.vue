@@ -5,6 +5,7 @@
     </a>
   </nav>
   <div class="container">
+    <h2 class="page-title">{{ pageType }}</h2>
     <SocialSignIn />
     <div class="section-title">
       <span class="line"></span>
@@ -12,13 +13,13 @@
       <span class="line"></span>
     </div>
     <EmailSignIn :pageType="pageType" />
-    <p v-if="pageType === 'signin'" class="footer">
+    <p v-if="pageType === 'sign in'" class="footer">
       Not a member yet?
-      <a href="" @click.prevent="pageType = 'join'">Click here to join</a>
+      <a href="" @click.prevent="pageType = 'sign up'">Click here to join</a>
     </p>
     <p v-else class="footer">
       Already a member?
-      <a href="" @click.prevent="pageType = 'signin'">Click here to signin</a>
+      <a href="" @click.prevent="pageType = 'sign in'">Click here to signin</a>
     </p>
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
   },
   data() {
     return {
-      pageType: "signin",
+      pageType: "sign in",
     };
   },
 };
@@ -74,6 +75,13 @@ nav {
   margin: auto;
   width: 90%;
   max-width: 590px;
+  margin-top: 148px;
+  text-align: center;
+}
+.page-title {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: 44px;
 }
 .section-title {
   width: 100%;
