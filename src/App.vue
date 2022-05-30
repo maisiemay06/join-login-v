@@ -1,6 +1,8 @@
 <template>
   <nav>
-    <img src="./assets/logo.png" alt="Meeow logo" id="logo" />
+    <a href="https://meeow.com/">
+      <img src="./assets/logo.png" alt="Meeow logo" id="logo" />
+    </a>
   </nav>
   <div class="container">
     <SocialSignIn />
