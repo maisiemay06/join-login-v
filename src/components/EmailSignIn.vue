@@ -10,7 +10,6 @@
           placeholder="Email address"
           v-model="emailInput"
           @blur="checkEmail"
-          :class="emailInvalid ? 'invalid' : ''"
         />
         <p id="invalid-email-msg" v-if="emailInvalidMsg">
           {{ emailInvalidMsg }}
@@ -155,7 +154,7 @@ export default {
       return regex.test(password);
     },
     enableButton() {
-      if (this.pageType === "signin") {
+      if (this.pageType === "sign in") {
         if (this.emailValid && this.passwordValid) {
           this.submitDisabled = false;
         } else {
