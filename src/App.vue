@@ -2,21 +2,23 @@
   <nav>
     <img src="./assets/logo.png" alt="Meeow logo" id="logo" />
   </nav>
-  <SocialSignIn />
-  <div class="section-title">
-    <span class="line"></span>
-    <h2>OR</h2>
-    <span class="line"></span>
+  <div class="container">
+    <SocialSignIn />
+    <div class="section-title">
+      <span class="line"></span>
+      <h2>OR</h2>
+      <span class="line"></span>
+    </div>
+    <EmailSignIn :pageType="pageType" />
+    <p v-if="pageType === 'signin'" class="footer">
+      Not a member yet?
+      <a href="" @click.prevent="pageType = 'join'">Click here to join</a>
+    </p>
+    <p v-else class="footer">
+      Already a member?
+      <a href="" @click.prevent="pageType = 'signin'">Click here to signin</a>
+    </p>
   </div>
-  <EmailSignIn :pageType="pageType" />
-  <p v-if="pageType === 'signin'" class="footer">
-    Not a member yet?
-    <a href="" @click.prevent="pageType = 'join'">Click here to join</a>
-  </p>
-  <p v-else class="footer">
-    Already a member?
-    <a href="" @click.prevent="pageType = 'signin'">Click here to signin</a>
-  </p>
 </template>
 
 <script>
@@ -66,8 +68,13 @@ nav {
   width: 140px;
   height: 25px;
 }
+.container {
+  margin: auto;
+  width: 90%;
+  max-width: 590px;
+}
 .section-title {
-  width: 590px;
+  width: 100%;
   margin: auto;
   margin-top: 50px;
   display: flex;
@@ -77,7 +84,7 @@ nav {
 }
 .section-title .line {
   border: 1px solid #bbbbbb;
-  width: 260px;
+  width: 100%;
   height: 0;
   opacity: 50%;
 }
@@ -92,5 +99,6 @@ nav {
   font-size: 0.875rem;
   color: #171717;
   margin-top: 25px;
+  padding-bottom: 50px;
 }
 </style>

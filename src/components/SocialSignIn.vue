@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .social-signin {
-  width: 590px;
+  width: 100%;
   margin: auto;
   margin-top: 148px;
   text-align: center;
@@ -43,7 +43,7 @@ export default {
   border: none;
   outline: none;
   border-radius: 9px;
-  width: 590px;
+  width: 100%;
   height: 48px;
   margin-bottom: 10px;
   display: flex;
@@ -55,12 +55,10 @@ export default {
   font-weight: 500;
   transition: 0.1s ease-in;
 }
-img {
-  width: 25px;
-  height: 25px;
-}
+img,
 .spacer {
   width: 25px;
+  height: 25px;
 }
 
 .social-button:hover {

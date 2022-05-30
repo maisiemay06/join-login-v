@@ -215,7 +215,7 @@ export default {
 <style scoped>
 .email-signin {
   background-color: #fff;
-  width: 590px;
+  width: 100%;
   height: auto;
   margin: auto;
   margin-top: 33px;
@@ -232,13 +232,16 @@ input {
   height: 40px;
   box-sizing: border-box;
   padding-left: 18px;
-  border: 1px solid #959595;
+  border: 2px solid #95959560;
   border-radius: 4px;
   margin-top: 8px;
   transition: 0.2s ease-in;
 }
 .email-wrapper input {
   margin-bottom: 15px;
+}
+input::placeholder {
+  color: #959595;
 }
 input:hover {
   border: 4px solid #171717;
