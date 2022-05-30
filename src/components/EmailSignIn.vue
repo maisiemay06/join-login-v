@@ -9,8 +9,14 @@
           id="email"
           placeholder="Email address"
           v-model="emailInput"
+          @blur="checkEmail"
+          :class="emailInvalid ? 'invalid' : ''"
         />
+        <p id="invalid-email-msg" v-if="emailInvalidMsg">
+          {{ emailInvalidMsg }}
+        </p>
       </span>
+
       <span class="password-wrapper">
         <label for="password">Password</label>
         <input
@@ -20,6 +26,7 @@
           placeholder="Password"
           v-model="passwordInput"
           @focus="showToggle = true"
+          @blur="checkPassword"
         />
         <span class="toggle-pass-container">
           <img
@@ -35,14 +42,34 @@
             @click="showPassword = false"
           />
         </span>
+
         <input
           v-if="pageType === 'join'"
-          type="sec-password"
+          :type="showSecPassword ? 'text' : 'password'"
           name="sec-password"
           id="sec-password"
           placeholder="Re-enter password"
           v-model="secPasswordInput"
+          @focus="showSecToggle = true"
+          @blur="checkSecPassword"
         />
+        <span class="toggle-pass-container">
+          <img
+            src="..\assets\eye.png"
+            alt=""
+            v-if="showSecToggle && !showSecPassword"
+            @click="showSecPassword = true"
+          />
+          <img
+            src="..\assets\eye-slash.png"
+            alt=""
+            v-if="showSecToggle && showSecPassword"
+            @click="showSecPassword = false"
+          />
+        </span>
+        <p id="invalid-pass-msg" v-if="passwordInvalidMsg">
+          {{ passwordInvalidMsg }}
+        </p>
       </span>
       <span class="forgot-pass">
         <a href="">Forgotten password?</a>
@@ -62,17 +89,29 @@ export default {
     return {
       emailInput: "",
       emailValid: false,
+      emailInvalidMsg: "",
+
       passwordInput: "",
       passwordValid: false,
+      passwordInvalidMsg: "",
+
       secPasswordInput: "",
       secPasswordValid: false,
+
       submitDisabled: true,
 
       showToggle: false,
       showPassword: false,
+
+      showSecToggle: false,
+      showSecPassword: false,
     };
   },
   watch: {
+    pageType() {
+      this.emailInvalidMsg = "";
+      this.passwordInvalidMsg = "";
+    },
     emailInput() {
       if (this.validateEmail(this.emailInput)) {
         this.emailValid = true;
@@ -88,7 +127,7 @@ export default {
       }
     },
     secPasswordInput() {
-      if (this.validatePassword(this.secPasswordInput)) {
+      if (this.secPasswordInput === this.passwordInput) {
         this.secPasswordValid = true;
       } else {
         this.secPasswordValid = false;
@@ -128,6 +167,45 @@ export default {
         } else {
           this.submitDisabled = true;
         }
+      }
+    },
+    checkEmail() {
+      if (this.emailInput.length === 0) {
+        // if email missing, show missing msg
+        this.emailInvalidMsg = "Email required";
+      } else if (!this.validateEmail(this.emailInput)) {
+        // if email invalid, show invalid msg
+        this.emailInvalidMsg = "Email invalid";
+      } else {
+        this.emailInvalidMsg = "";
+      }
+    },
+    checkPassword() {
+      if (this.passwordInput.length === 0) {
+        // if missing, show missing msg
+        this.passwordInvalidMsg = "Password required";
+      } else if (!this.validatePassword(this.passwordInput)) {
+        // if invalid, show invalid msg
+        this.passwordInvalidMsg = "Password invalid";
+      } else {
+        this.passwordInvalidMsg = "";
+      }
+    },
+    checkSecPassword() {
+      if (this.secPasswordInput.length === 0) {
+        // if missing, show missing msg
+        this.passwordInvalidMsg = "Password required";
+      } else if (!this.validatePassword(this.secPasswordInput)) {
+        // if invalid, show invalid msg
+        this.passwordInvalidMsg = "Password invalid";
+      } else if (
+        this.pageType === "join" &&
+        this.passwordInput !== this.secPasswordInput
+      ) {
+        // if passwords don't match, show no match msg
+        this.passwordInvalidMsg = "Passwords don't match";
+      } else {
+        this.passwordInvalidMsg = "";
       }
     },
   },
@@ -180,8 +258,24 @@ input:hover {
   z-index: 10;
 }
 
+#invalid-email-msg {
+  color: #fa0521;
+  font-size: 0.75rem;
+  margin-top: -10px;
+  margin-bottom: -7px;
+  text-align: center;
+}
+#invalid-pass-msg {
+  color: #fa0521;
+  font-size: 0.75rem;
+  margin-top: 5px;
+  margin-bottom: -22px;
+  text-align: center;
+  width: 100%;
+}
+
 .forgot-pass {
-  margin-top: 36px;
+  margin-top: 25px;
   display: block;
   text-align: center;
   font-size: 0.75rem;
