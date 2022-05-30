@@ -8,26 +8,46 @@
           name="email"
           id="email"
           placeholder="Email address"
+          v-model="emailInput"
         />
       </span>
       <span class="password-wrapper">
         <label for="password">Password</label>
         <input
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
           name="password"
           id="password"
           placeholder="Password"
+          v-model="passwordInput"
+          @focus="showToggle = true"
         />
+        <span class="toggle-pass-container">
+          <img
+            src="..\assets\eye.png"
+            alt=""
+            v-if="showToggle && !showPassword"
+            @click="showPassword = true"
+          />
+          <img
+            src="..\assets\eye-slash.png"
+            alt=""
+            v-if="showToggle && showPassword"
+            @click="showPassword = false"
+          />
+        </span>
         <input
           v-if="pageType === 'join'"
           type="sec-password"
           name="sec-password"
           id="sec-password"
           placeholder="Re-enter password"
+          v-model="secPasswordInput"
         />
       </span>
-      <a href="">Forgotten password?</a>
-      <button disabled>sign-in</button>
+      <span class="forgot-pass">
+        <a href="">Forgotten password?</a>
+      </span>
+      <button :disabled="submitDisabled ? true : false">sign-in</button>
     </form>
   </div>
 </template>
@@ -37,6 +57,79 @@ export default {
   name: "EmailSignIn",
   props: {
     pageType: String,
+  },
+  data() {
+    return {
+      emailInput: "",
+      emailValid: false,
+      passwordInput: "",
+      passwordValid: false,
+      secPasswordInput: "",
+      secPasswordValid: false,
+      submitDisabled: true,
+
+      showToggle: false,
+      showPassword: false,
+    };
+  },
+  watch: {
+    emailInput() {
+      if (this.validateEmail(this.emailInput)) {
+        this.emailValid = true;
+      } else {
+        this.emailValid = false;
+      }
+    },
+    passwordInput() {
+      if (this.validatePassword(this.passwordInput)) {
+        this.passwordValid = true;
+      } else {
+        this.passwordValid = false;
+      }
+    },
+    secPasswordInput() {
+      if (this.validatePassword(this.secPasswordInput)) {
+        this.secPasswordValid = true;
+      } else {
+        this.secPasswordValid = false;
+      }
+    },
+    emailValid() {
+      this.enableButton();
+    },
+    passwordValid() {
+      this.enableButton();
+    },
+    secPasswordValid() {
+      this.enableButton();
+    },
+  },
+  methods: {
+    validateEmail(email) {
+      const regex =
+        /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,6})+$/;
+      return regex.test(email);
+    },
+    validatePassword(password) {
+      // upper & lower case, special char, min 6
+      const regex = /^(?=.*[A-Z])(?=.*[#$@!%&*?])[A-Za-zd#$@!%&*?]{6,}/;
+      return regex.test(password);
+    },
+    enableButton() {
+      if (this.pageType === "signin") {
+        if (this.emailValid && this.passwordValid) {
+          this.submitDisabled = false;
+        } else {
+          this.submitDisabled = true;
+        }
+      } else {
+        if (this.emailValid && this.passwordValid && this.secPasswordValid) {
+          this.submitDisabled = false;
+        } else {
+          this.submitDisabled = true;
+        }
+      }
+    },
   },
 };
 </script>
@@ -64,17 +157,39 @@ input {
   border: 1px solid #959595;
   border-radius: 4px;
   margin-top: 8px;
+  transition: 0.2s ease-in;
 }
 .email-wrapper input {
   margin-bottom: 15px;
 }
+input:hover {
+  border: 4px solid #171717;
+  padding-left: 15px;
+}
+
+.password-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.toggle-pass-container {
+  margin-top: -28px;
+  position: relative;
+  left: 490px;
+}
+.toggle-pass-container img {
+  z-index: 10;
+}
+
+.forgot-pass {
+  margin-top: 36px;
+  display: block;
+  text-align: center;
+  font-size: 0.75rem;
+}
 a {
   color: #171717;
-  font-size: 0.75rem;
-  text-align: center;
-  display: block;
-  margin-top: 36px;
 }
+
 button {
   width: 165px;
   height: 45px;
