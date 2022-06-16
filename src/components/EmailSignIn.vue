@@ -61,7 +61,7 @@
           @focus="showSecToggle = true"
           @blur="checkSecPassword"
         />
-        <span class="toggle-pass-container">
+        <span class="toggle-sec-pass-container">
           <img
             src="..\assets\eye.png"
             alt=""
@@ -276,9 +276,15 @@ input:hover {
 .toggle-pass-container {
   margin-top: -32px;
   position: relative;
+  left: 105px;
+}
+.toggle-sec-pass-container {
+  margin-top: -32px;
+  position: relative;
   left: 450px;
 }
-.toggle-pass-container img {
+.toggle-pass-container img,
+.toggle-sec-pass-container img {
   z-index: 10;
 }
 
