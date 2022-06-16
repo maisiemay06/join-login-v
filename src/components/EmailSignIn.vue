@@ -1,6 +1,9 @@
 <template>
   <div class="email-signin">
     <form action="">
+      <span class="forgot-pass">
+        <a href="">Forgotten password?</a>
+      </span>
       <span class="email-wrapper">
         <label for="email">Email</label>
         <input
@@ -27,6 +30,12 @@
           @focus="showToggle = true"
           @blur="checkPassword"
         />
+        <p
+          id="pass-requirements"
+          :style="passwordInvalid ? { color: '#fa0521' } : { color: '#9f9f9f' }"
+        >
+          Must contain at least 1 uppercase letter and a special character
+        </p>
         <span class="toggle-pass-container">
           <img
             src="..\assets\eye.png"
@@ -70,10 +79,8 @@
           {{ passwordInvalidMsg }}
         </p>
       </span>
-      <span class="forgot-pass">
-        <a href="">Forgotten password?</a>
-      </span>
-      <button :disabled="submitDisabled ? true : false">{{ pageType }}</button>
+
+      <button :disabled="submitDisabled ? true : false">Continue</button>
     </form>
   </div>
 </template>
@@ -92,6 +99,7 @@ export default {
 
       passwordInput: "",
       passwordValid: false,
+      passwordInvalid: false,
       passwordInvalidMsg: "",
 
       secPasswordInput: "",
@@ -154,7 +162,7 @@ export default {
       return regex.test(password);
     },
     enableButton() {
-      if (this.pageType === "sign in") {
+      if (this.pageType === "Login") {
         if (this.emailValid && this.passwordValid) {
           this.submitDisabled = false;
         } else {
@@ -171,10 +179,10 @@ export default {
     checkEmail() {
       if (this.emailInput.length === 0) {
         // if email missing, show missing msg
-        this.emailInvalidMsg = "Email required";
+        this.emailInvalidMsg = "please enter an email address";
       } else if (!this.validateEmail(this.emailInput)) {
         // if email invalid, show invalid msg
-        this.emailInvalidMsg = "Email invalid";
+        this.emailInvalidMsg = "please use a valid email address";
       } else {
         this.emailInvalidMsg = "";
       }
@@ -182,10 +190,12 @@ export default {
     checkPassword() {
       if (this.passwordInput.length === 0) {
         // if missing, show missing msg
-        this.passwordInvalidMsg = "Password required";
+        this.passwordInvalidMsg = "please enter a password";
       } else if (!this.validatePassword(this.passwordInput)) {
         // if invalid, show invalid msg
-        this.passwordInvalidMsg = "Password invalid";
+        this.passwordInvalidMsg =
+          "Must contain at least 1 uppercase letter and a special character";
+        this.passwordInvalid = true;
       } else {
         this.passwordInvalidMsg = "";
       }
@@ -193,10 +203,12 @@ export default {
     checkSecPassword() {
       if (this.secPasswordInput.length === 0) {
         // if missing, show missing msg
-        this.passwordInvalidMsg = "Password required";
+        this.passwordInvalidMsg = "please enter a password";
+        this.passwordInvalid = false;
       } else if (!this.validatePassword(this.secPasswordInput)) {
         // if invalid, show invalid msg
-        this.passwordInvalidMsg = "Password invalid";
+        this.passwordInvalidMsg =
+          "Must contain at least 1 uppercase letter and a special character";
       } else if (
         this.pageType === "sign up" &&
         this.passwordInput !== this.secPasswordInput
@@ -205,6 +217,7 @@ export default {
         this.passwordInvalidMsg = "Passwords don't match";
       } else {
         this.passwordInvalidMsg = "";
+        this.passwordInvalid = false;
       }
     },
   },
@@ -212,6 +225,15 @@ export default {
 </script>
 
 <style scoped>
+.forgot-pass {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  margin-bottom: -16px;
+}
+a {
+  color: #171717;
+}
 .email-signin {
   background-color: #fff;
   width: 100%;
@@ -228,7 +250,7 @@ form {
 }
 input {
   width: 100%;
-  height: 40px;
+  height: 50px;
   box-sizing: border-box;
   padding-left: 18px;
   border: 2px solid #95959560;
@@ -240,7 +262,7 @@ input {
   margin-bottom: 15px;
 }
 input::placeholder {
-  color: #959595;
+  color: #171717;
 }
 input:hover {
   border: 4px solid #171717;
@@ -252,52 +274,53 @@ input:hover {
   flex-wrap: wrap;
 }
 .toggle-pass-container {
-  margin-top: -28px;
+  margin-top: -32px;
   position: relative;
-  left: 490px;
+  left: 450px;
 }
 .toggle-pass-container img {
   z-index: 10;
 }
 
-#invalid-email-msg {
-  color: #fa0521;
+#pass-requirements {
   font-size: 0.75rem;
-  margin-top: -10px;
-  margin-bottom: -7px;
-  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  margin-left: 0;
 }
+.invalid {
+  color: #fa0521;
+}
+
+#invalid-email-msg,
 #invalid-pass-msg {
   color: #fa0521;
   font-size: 0.75rem;
-  margin-top: 5px;
-  margin-bottom: -22px;
-  text-align: center;
-  width: 100%;
+  text-align: left;
 }
 
-.forgot-pass {
-  margin-top: 25px;
-  display: block;
-  text-align: center;
-  font-size: 0.75rem;
+#invalid-email-msg {
+  margin-top: -10px;
+  margin-bottom: 20px;
 }
-a {
-  color: #171717;
+#invalid-pass-msg {
+  margin-top: 5px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 button {
-  width: 165px;
-  height: 45px;
+  width: 196px;
+  height: 50px;
   background-color: #3843f1;
   color: #fff;
   border: none;
   outline: none;
-  border-radius: 6px;
+  border-radius: 50px;
   display: block;
   margin: auto;
   margin-top: 20px;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   transition: 0.1s ease-in;
 }
@@ -306,10 +329,10 @@ button:hover {
   cursor: pointer;
 }
 button:disabled {
-  background-color: #eeeeee;
+  background-color: #d8d8d8;
 }
 button:disabled:hover {
-  background-color: #eeeeee;
+  background-color: #d8d8d8;
   cursor: default;
 }
 </style>
